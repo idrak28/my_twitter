@@ -2,8 +2,11 @@ from django.shortcuts import render
 from .models import Tweet
 from .forms import TweetForm, UserRegistrationForm
 from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required  #login
 from django.contrib.auth import login
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 # Create your views here.
 
 def index(request):
@@ -63,3 +66,9 @@ def register(request):
     form = UserRegistrationForm()
 
   return render(request, 'registration/register.html', {'form': form})
+
+
+class ChangePasswordView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('home')
+    template_name = 'change_password.html'
